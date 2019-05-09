@@ -325,6 +325,14 @@ public class Capture extends CordovaPlugin {
      * Sets up an intent to capture video.  Result handled by onActivityResult()
      */
     private void captureVideo(Request req) {
+
+        boolean saveAlbumPermission = PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            && PermissionHelper.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (!saveAlbumPermission) {
+            PermissionHelper.requestPermissions(this, TAKE_PIC_SEC,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE});
+
         if(cameraPermissionInManifest && !PermissionHelper.hasPermission(this, Manifest.permission.CAMERA)) {
             PermissionHelper.requestPermission(this, req.requestCode, Manifest.permission.CAMERA);
         } else {
