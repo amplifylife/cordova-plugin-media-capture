@@ -84,7 +84,7 @@ public class Capture extends CordovaPlugin {
 
     private boolean cameraPermissionInManifest;     // Whether or not the CAMERA permission is declared in AndroidManifest.xml
 
-    private final PendingRequests pendingRequests = new PendingRequests();
+    private final org.apache.cordova.mediacapture.PendingRequests pendingRequests = new org.apache.cordova.mediacapture.PendingRequests();
 
     private int numPics;                            // Number of pictures before capture activity
     private Uri imageUri;
@@ -170,7 +170,7 @@ public class Capture extends CordovaPlugin {
         // If the mimeType isn't set the rest will fail
         // so let's see if we can determine it.
         if (mimeType == null || mimeType.equals("") || "null".equals(mimeType)) {
-            mimeType = FileHelper.getMimeType(fileUrl, cordova);
+            mimeType = org.apache.cordova.mediacapture.FileHelper.getMimeType(fileUrl, cordova);
         }
         LOG.d(LOG_TAG, "Mime type = " + mimeType);
 
@@ -332,6 +332,7 @@ public class Capture extends CordovaPlugin {
         if (!saveAlbumPermission) {
             PermissionHelper.requestPermissions(this, TAKE_PIC_SEC,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE});
+        }
 
         if(cameraPermissionInManifest && !PermissionHelper.hasPermission(this, Manifest.permission.CAMERA)) {
             PermissionHelper.requestPermission(this, req.requestCode, Manifest.permission.CAMERA);
@@ -512,7 +513,7 @@ public class Capture extends CordovaPlugin {
                     obj.put("type", VIDEO_3GPP);
                 }
             } else {
-                obj.put("type", FileHelper.getMimeType(Uri.fromFile(fp), cordova));
+                obj.put("type", org.apache.cordova.mediacapture.FileHelper.getMimeType(Uri.fromFile(fp), cordova));
             }
 
             obj.put("lastModifiedDate", fp.lastModified());
